@@ -16,77 +16,86 @@
     <img src="https://img.shields.io/badge/Vite-Frontend-purple" alt="Vite">
 </p>
 
----
+# Descrizione del Progetto
 
-## About The Project
+LaraProject è un'applicazione web Laravel configurata con un ambiente di sviluppo moderno e completamente containerizzato.
 
-LaraProject is a Laravel application configured with:
+Il progetto include:
 
-- Docker-based local development
-- Vite frontend asset pipeline
-- MySQL database
-- Nginx reverse proxy
-- GitHub Actions deployment workflow
-- Automatic production deployment through SSH
+- ambiente di sviluppo locale con Docker
+- stack Laravel + MySQL + Nginx
+- pipeline frontend con Vite
+- supporto DevContainer per VSCode
+- CI/CD con GitHub Actions
+- deploy automatico in produzione tramite SSH
 
-The project is designed to provide:
+L'obiettivo della configurazione è fornire:
 
-- a clean local development environment
-- a reproducible deployment setup
-- separation between development infrastructure and production hosting
+- un ambiente di sviluppo identico per tutti i membri del gruppo
+- sviluppo locale isolato dal server online
+- deploy automatico dopo merge su `main`
+- una struttura Laravel pulita e facilmente estendibile
 
----
+# Workflow di Sviluppo
 
-# Project Structure
+Ogni membro del gruppo deve:
 
-```text
-laraProject/
-├── app/
-├── bootstrap/
-├── config/
-├── database/
-├── public/
-├── resources/
-├── routes/
-├── storage/
-├── tests/
-│
-├── artisan
-├── composer.json
-├── package.json
-├── vite.config.js
-│
-├── docker-compose.dev.yml
-├── Dockerfile.dev
-├── entrypoint.sh
-│
-├── nginx/
-│   ├── Dockerfile
-│   ├── default.conf.template
-│   └── entrypoint.sh
-│
-├── deploy.sh
-└── README.md
+1. Creare un branch personale partendo da `main`
+2. Lavorare in locale tramite Docker
+3. Fare push del proprio branch
+4. Aprire una Pull Request
+5. Fare merge su `main`
+
+Dopo il merge, il server viene aggiornato automaticamente tramite GitHub Actions.
+
+⚠️ Non lavorare direttamente sul branch `main`.
+
+# Requisiti
+
+Per lavorare al progetto servono:
+
+- Docker Desktop
+- Docker Compose
+- Visual Studio Code (consigliato)
+
+Estensioni VSCode consigliate:
+
+- Dev Containers
+
+Il progetto include già una configurazione DevContainer completa con:
+
+- estensioni Laravel
+- supporto Tailwind
+- IntelliSense PHP
+- ESLint
+- Prettier
+- formatter automatici
+
+# Apertura del Progetto nel DevContainer
+
+Dopo aver clonato la repository:
+
+```bash
+git clone https://github.com/mjouins/laraProject.git
 ```
 
----
+aprire la cartella con VSCode e selezionare:
 
-# Local Development
+```text
+Reopen in Container
+```
 
-## Requirements
+VSCode creerà automaticamente l’ambiente di sviluppo completo.
 
-- Docker
-- Docker Compose
+# Avvio dell'Ambiente di Sviluppo
 
----
-
-## Start Development Environment
+Avviare i container con:
 
 ```bash
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-Application:
+Applicazione Laravel:
 
 ```text
 http://localhost:8000
@@ -98,116 +107,101 @@ Vite Dev Server:
 http://localhost:5173
 ```
 
----
+Spegnere i container:
 
-# Development Services
+```bash
+docker compose -f docker-compose.dev.yml down
+```
 
-| Service | Description               |
-| ------- | ------------------------- |
-| app     | PHP-FPM Laravel container |
-| vite    | Vite development server   |
-| nginx   | Nginx reverse proxy       |
-| db      | MySQL database            |
+# Servizi Docker
 
----
+| Servizio | Descrizione                       |
+| -------- | --------------------------------- |
+| app      | Container PHP-FPM Laravel         |
+| vite     | Server Vite per sviluppo frontend |
+| nginx    | Reverse proxy Nginx               |
+| db       | Database MySQL                    |
 
-# Environment Files
+# File Environment
 
-Development environment:
+Environment di sviluppo:
 
 ```text
 .env.dev
 ```
 
-Production environment:
+Environment di produzione:
 
 ```text
 .env.prod
 ```
 
----
+I file `.env` sono ignorati da Git per motivi di sicurezza.
 
 # Database
 
-The MySQL database runs inside Docker during development.
+Durante lo sviluppo il database MySQL gira all’interno dei container Docker.
 
-Connection values are loaded automatically from:
+La configurazione viene caricata automaticamente da:
 
 ```text
 .env.dev
 ```
 
-Database data is persisted through Docker volumes.
+I dati vengono mantenuti tramite Docker Volumes.
 
----
+# Deploy in Produzione
 
-# Production Deployment
+Il deploy in produzione è completamente automatizzato tramite GitHub Actions.
 
-Production deployment is handled through GitHub Actions over SSH.
-
-The production server runs:
-
-- PHP
-- Composer
-- Node.js
-- npm
-
-without Docker.
-
----
-
-## Manual Deployment
-
-```bash
-./deploy.sh
-```
-
-Deployment script automatically:
-
-- pulls latest changes
-- installs Composer dependencies
-- installs Node dependencies
-- builds Vite assets
-- clears Laravel caches
-- runs migrations
-
----
-
-# GitHub Actions Deployment
-
-Production deployment is triggered automatically on push to:
+Quando viene eseguito un merge su:
 
 ```text
 main
 ```
 
-Required GitHub Secrets:
+GitHub Actions:
 
-| Secret          | Description                |
-| --------------- | -------------------------- |
-| SERVER_IP       | Production server IP       |
-| SERVER_USER     | SSH username               |
-| SSH_PRIVATE_KEY | Private SSH deployment key |
+1. Si connette via SSH al relay server
+2. Dal relay server si connette al server universitario
+3. Esegue automaticamente lo script di deploy
 
----
+L’ambiente di produzione gira senza Docker.
 
-# Production URL
+# Script di Deploy
 
-Example university hosting structure:
+Il deploy viene eseguito tramite:
+
+```bash
+./deploy.sh
+```
+
+Lo script:
+
+- aggiorna il repository
+- installa le dipendenze Composer
+- installa le dipendenze Node
+- compila gli asset Vite
+- crea le cartelle cache di Laravel
+- sistema i permessi
+- pulisce la cache Laravel
+- esegue le migration
+
+# URL Produzione
 
 ```text
 https://tweban.dii.univpm.it/~grp_04/laraProject/public
 ```
 
----
-
-# Useful Commands
+# Comandi Utili
 
 ## Laravel
 
 ```bash
 php artisan migrate
+
 php artisan optimize:clear
+
 php artisan route:list
 ```
 
@@ -227,20 +221,18 @@ npm run dev
 npm run build
 ```
 
----
+# Tecnologie Utilizzate
 
-# Technologies
-
-- Laravel
+- Laravel 12
 - PHP 8.3
 - Docker
+- Docker Compose
 - MySQL 8
 - Nginx
 - Vite
 - GitHub Actions
+- VSCode DevContainers
 
----
+# Licenza
 
-# License
-
-This project is open-source and available under the MIT license.
+Questo progetto è distribuito sotto licenza MIT.
