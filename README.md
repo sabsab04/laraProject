@@ -10,7 +10,7 @@
     <a href="https://github.com/mjouins/laraProject/actions/workflows/deploy.yml">
         <img src="https://github.com/mjouins/laraProject/actions/workflows/deploy.yml/badge.svg" alt="Deploy to Production">
     </a>
-    <img src="https://img.shields.io/badge/Laravel-12-red" alt="Laravel">
+    <img src="https://img.shields.io/badge/Laravel-13-red" alt="Laravel">
     <img src="https://img.shields.io/badge/PHP-8.3-blue" alt="PHP">
     <img src="https://img.shields.io/badge/Docker-Development-blue" alt="Docker">
     <img src="https://img.shields.io/badge/Vite-Frontend-purple" alt="Vite">
@@ -20,21 +20,16 @@
 
 LaraProject è un'applicazione web Laravel configurata con un ambiente di sviluppo moderno e completamente containerizzato.
 
-Il progetto include:
+Il progetto utilizza:
 
-- ambiente di sviluppo locale con Docker
-- stack Laravel + MySQL + Nginx
-- pipeline frontend con Vite
-- supporto DevContainer per VSCode
-- CI/CD con GitHub Actions
-- deploy automatico in produzione tramite SSH
+- Docker per lo sviluppo locale
+- Laravel + MySQL + Nginx
+- Vite per il frontend
+- DevContainers per VSCode
+- GitHub Actions per CI/CD
+- deploy automatico tramite SSH
 
-L'obiettivo della configurazione è fornire:
-
-- un ambiente di sviluppo identico per tutti i membri del gruppo
-- sviluppo locale isolato dal server online
-- deploy automatico dopo merge su `main`
-- una struttura Laravel pulita e facilmente estendibile
+L'obiettivo è fornire un ambiente di sviluppo uniforme per tutti i membri del gruppo, separando completamente lo sviluppo locale dall'ambiente di produzione.
 
 # Workflow di Sviluppo
 
@@ -44,11 +39,12 @@ Ogni membro del gruppo deve:
 2. Lavorare in locale tramite Docker
 3. Fare push del proprio branch
 4. Aprire una Pull Request
-5. Fare merge su `main`
+5. Se la PR viene approvata, verrà eseguito il merge su `main`
 
 Dopo il merge, il server viene aggiornato automaticamente tramite GitHub Actions.
 
-⚠️ Non lavorare direttamente sul branch `main`.
+> [!IMPORTANT]
+> Non lavorare direttamente sul branch `main`.
 
 # Requisiti
 
@@ -57,19 +53,7 @@ Per lavorare al progetto servono:
 - Docker Desktop
 - Docker Compose
 - Visual Studio Code (consigliato)
-
-Estensioni VSCode consigliate:
-
-- Dev Containers
-
-Il progetto include già una configurazione DevContainer completa con:
-
-- estensioni Laravel
-- supporto Tailwind
-- IntelliSense PHP
-- ESLint
-- Prettier
-- formatter automatici
+- Dev Containers Estensione per VSCode (consigliata)
 
 # Apertura del Progetto nel DevContainer
 
@@ -84,6 +68,9 @@ aprire la cartella con VSCode e selezionare:
 ```text
 Reopen in Container
 ```
+
+> [!TIP]
+> Se non compare fare CTRL+SHIFT+P e cercare "Reopen in Container"
 
 VSCode creerà automaticamente l’ambiente di sviluppo completo.
 
@@ -113,30 +100,22 @@ Spegnere i container:
 docker compose -f docker-compose.dev.yml down
 ```
 
-# Servizi Docker
-
-| Servizio | Descrizione                       |
-| -------- | --------------------------------- |
-| app      | Container PHP-FPM Laravel         |
-| vite     | Server Vite per sviluppo frontend |
-| nginx    | Reverse proxy Nginx               |
-| db       | Database MySQL                    |
-
 # File Environment
 
-Environment di sviluppo:
+Environment di sviluppo sul vostro PC:
 
 ```text
 .env.dev
 ```
 
-Environment di produzione:
+Environment di produzione sul server:
 
 ```text
-.env.prod
+.env
 ```
 
-I file `.env` sono ignorati da Git per motivi di sicurezza.
+> [!NOTE]
+> I file `.env` sono ignorati da Git per motivi di sicurezza.
 
 # Database
 
@@ -167,8 +146,6 @@ GitHub Actions:
 3. Esegue automaticamente lo script di deploy
 
 L’ambiente di produzione gira senza Docker.
-
-# Script di Deploy
 
 Il deploy viene eseguito tramite:
 
@@ -223,7 +200,7 @@ npm run build
 
 # Tecnologie Utilizzate
 
-- Laravel 12
+- Laravel 13
 - PHP 8.3
 - Docker
 - Docker Compose
@@ -232,7 +209,3 @@ npm run build
 - Vite
 - GitHub Actions
 - VSCode DevContainers
-
-# Licenza
-
-Questo progetto è distribuito sotto licenza MIT.
