@@ -10,11 +10,17 @@ npm install
 
 npm run build
 
-mkdir -p storage/framework/{views,cache,sessions}
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache
+mkdir -p storage/framework/sessions
 mkdir -p bootstrap/cache
 
-chmod -R 777 storage
-chmod -R 777 bootstrap/cache
+chmod 777 storage
+chmod 777 storage/framework
+chmod 777 storage/framework/views
+chmod 777 storage/framework/sessions
+chmod 777 storage/framework/cache
+chmod 777 bootstrap/cache
 
 php artisan optimize:clear
 
