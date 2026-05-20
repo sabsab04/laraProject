@@ -22,5 +22,5 @@ jobs:
 
           script: |
             cd ${{ secrets.PRODUCTION_PATH }}
-            echo "${{ secrets.ENV_PROD_CONTENT }}" > .env.prod
+            echo "${{ secrets.ENV_PROD_CONTENT }}" > .env
             ./deploy.sh
