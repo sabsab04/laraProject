@@ -13,15 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to server
+      - name: Deploy through relay server
         uses: appleboy/ssh-action@v0.1.7
+
         with:
           host: ${{ secrets.SERVER_IP }}
-          port: 60022
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
           script: |
-            cd ${{ secrets.PRODUCTION_PATH }}
-            echo "${{ secrets.ENV_PROD_CONTENT }}" > .env
-            ./deploy.sh
+            set -e
+
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/${{ secrets.TWEBAN_KEY }} -p ${{ secrets.TWEBAN_PORT }} ${{ secrets.TWEBAN_USER }}@${{ secrets.TWEBAN_HOST }} "
+              cd ${{ secrets.TWEBAN_PATH }} &&
+              echo '${{ secrets.ENV_PROD_CONTENT }}' > .env &&
+              ./deploy.sh
+            "
