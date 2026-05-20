@@ -5,6 +5,8 @@
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
 
+  "postCreateCommand": "composer install && npm install",
+
   "customizations": {
     "vscode": {
       "extensions": [
