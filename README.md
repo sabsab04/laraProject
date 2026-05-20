@@ -7,6 +7,9 @@
 </p>
 
 <p align="center">
+    <a href="https://github.com/mjouins/laraProject/actions/workflows/deploy.yml">
+        <img src="https://github.com/mjouins/laraProject/actions/workflows/deploy.yml/badge.svg" alt="Deploy to Production">
+    </a>
     <img src="https://img.shields.io/badge/Laravel-12-red" alt="Laravel">
     <img src="https://img.shields.io/badge/PHP-8.3-blue" alt="PHP">
     <img src="https://img.shields.io/badge/Docker-Development-blue" alt="Docker">
