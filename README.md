@@ -16,6 +16,25 @@
     <img src="https://img.shields.io/badge/Vite-Frontend-purple" alt="Vite">
 </p>
 
+# Indice
+
+- [LaraProject](#laraproject)
+- [Indice](#indice)
+- [Descrizione del Progetto](#descrizione-del-progetto)
+- [Workflow di Sviluppo](#workflow-di-sviluppo)
+- [Requisiti](#requisiti)
+- [Apertura del Progetto nel DevContainer](#apertura-del-progetto-nel-devcontainer)
+- [Avvio dell'Ambiente di Sviluppo](#avvio-dellambiente-di-sviluppo)
+- [File Environment](#file-environment)
+- [Database](#database)
+- [Deploy in Produzione](#deploy-in-produzione)
+- [URL Produzione](#url-produzione)
+- [Comandi Utili](#comandi-utili)
+  - [Laravel](#laravel)
+  - [Docker](#docker)
+  - [Frontend](#frontend)
+- [Tecnologie Utilizzate](#tecnologie-utilizzate)
+
 # Descrizione del Progetto
 
 LaraProject è un'applicazione web Laravel configurata con un ambiente di sviluppo moderno e completamente containerizzato.
