@@ -1,16 +1,16 @@
 services:
   app:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile.dev
 
     # Laravel project will live here
-    working_dir: /workspace/backend
+    working_dir: /workspace
 
-    # Synchronize backend local folder into container
+    # Synchronize local folder into container
     volumes:
       - ./:/workspace
-      - ./backend/.env.dev:/workspace/backend/.env
+      - ./.env.dev:/workspace/.env
 
     depends_on:
       - db
@@ -24,14 +24,14 @@ services:
 
   vite:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile.dev
 
-    working_dir: /workspace/backend
+    working_dir: /workspace
 
     volumes:
       - ./:/workspace
-      - ./backend/.env.dev:/workspace/backend/.env
+      - ./.env.dev:/workspace/.env
 
     # Publish container port 5173  for Vite dev server
     ports:
@@ -51,7 +51,7 @@ services:
       dockerfile: Dockerfile
 
     environment:
-      APP_ROOT: /workspace/backend
+      APP_ROOT: /workspace
 
     # Publish container port 80 to localhost:8000
     ports:
@@ -75,7 +75,7 @@ services:
 
     # Load MySQL credentials from .env.dev file
     env_file:
-      - ./backend/.env.dev
+      - ./.env.dev
 
     # Use native password plugin for compatibility with Laravel's MySQL driver
     command: --default-authentication-plugin=mysql_native_password

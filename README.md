@@ -1,256 +1,243 @@
-# Laravel Project Template
+# LaraProject
 
-This template was designed to make Laravel development feel modern, reproducible, and production-safe while keeping the setup understandable and customizable.
+<p align="center">
+    <a href="https://laravel.com" target="_blank">
+        <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+    </a>
+</p>
 
-Production-ready Laravel + Docker development environment with:
+<p align="center">
+    <img src="https://img.shields.io/badge/Laravel-12-red" alt="Laravel">
+    <img src="https://img.shields.io/badge/PHP-8.3-blue" alt="PHP">
+    <img src="https://img.shields.io/badge/Docker-Development-blue" alt="Docker">
+    <img src="https://img.shields.io/badge/Vite-Frontend-purple" alt="Vite">
+</p>
 
-- Laravel + PHP-FPM
-- MySQL
-- Vite frontend integration
-- Dockerized development & production environments
-- Devcontainers for Vscode (for intelliSense)
-- GitHub Actions CI/CD deployment
-- Hot reload development workflow
-- Automated production deployments
-- Nginx reverse proxy (setup on host machine)
+---
 
-# Table of Contents
+## About The Project
 
-- [Laravel Project Template](#laravel-project-template)
-- [Table of Contents](#table-of-contents)
-- [Features](#features)
-  - [Development Environment](#development-environment)
-  - [Production Environment](#production-environment)
-  - [CI/CD](#cicd)
-- [Stack Overview](#stack-overview)
-- [Requirements](#requirements)
-  - [Local Development](#local-development)
-- [Local Development Setup](#local-development-setup)
-  - [1. Clone Repository](#1-clone-repository)
-  - [2. Configure Environment](#2-configure-environment)
-  - [3. Start Development Environment](#3-start-development-environment)
-- [Development Services](#development-services)
-- [Devcontainer Usage](#devcontainer-usage)
-- [Production Deployment](#production-deployment)
-  - [Production Environment Variables](#production-environment-variables)
-- [Start Production Stack](#start-production-stack)
-- [GitHub Actions Deployment](#github-actions-deployment)
-- [Suggested Production Server Setup](#suggested-production-server-setup)
-- [Useful Commands](#useful-commands)
-  - [Rebuild Containers](#rebuild-containers)
-  - [Stop Containers](#stop-containers)
-  - [Laravel Artisan](#laravel-artisan)
-  - [NPM](#npm)
+LaraProject is a Laravel application configured with:
 
-# Features
+- Docker-based local development
+- Vite frontend asset pipeline
+- MySQL database
+- Nginx reverse proxy
+- GitHub Actions deployment workflow
+- Automatic production deployment through SSH
 
-## Development Environment
+The project is designed to provide:
 
-- Full Dockerized local development
-- Hot reload with Vite
-- Devcontainers support
-- Isolated services
-- Shared code mounting
-- Automatic dependency installation
-- Automatic Laravel migrations
-- Database readiness waiting
-- Local IntelliSense support
+- a clean local development environment
+- a reproducible deployment setup
+- separation between development infrastructure and production hosting
 
-## Production Environment
+---
 
-- Optimized production Docker images
-- Separate production compose stack
-- Production Nginx configuration
-- Laravel cache optimization
-- Non-dev Composer dependencies
-- Automatic restart policies
-- GitHub Actions deployment pipeline
-
-## CI/CD
-
-Push to GitHub → automatic deployment to server.
-
-The workflow:
-
-1. Connects to server through SSH
-2. Pulls latest repository changes
-3. Rebuilds containers
-4. Restarts production stack
-
-# Stack Overview
+# Project Structure
 
 ```text
-Internet
-    ↓
-Cloudflare
-    ↓
-Host Nginx Reverse Proxy
-    ↓
-Docker Nginx Container
-    ↓
-Laravel PHP-FPM Container
-    ↓
-MySQL Container
+laraProject/
+├── app/
+├── bootstrap/
+├── config/
+├── database/
+├── public/
+├── resources/
+├── routes/
+├── storage/
+├── tests/
+│
+├── artisan
+├── composer.json
+├── package.json
+├── vite.config.js
+│
+├── docker-compose.dev.yml
+├── Dockerfile.dev
+├── entrypoint.sh
+│
+├── nginx/
+│   ├── Dockerfile
+│   ├── default.conf.template
+│   └── entrypoint.sh
+│
+├── deploy.sh
+└── README.md
 ```
 
-# Requirements
+---
 
-## Local Development
+# Local Development
 
-Install:
+## Requirements
 
 - Docker
 - Docker Compose
-- VSCode (recommended)
-- Dev Containers extension (recommended)
 
-# Local Development Setup
+---
 
-## 1. Clone Repository
-
-```bash
-git clone https://github.com/mjouins/laravel-project-template.git
-cd laravel-project-template
-```
-
-## 2. Configure Environment
-
-Inside `backend/`:
-
-```bash
-cp .env.example .env.dev
-```
-
-Generate Laravel app key:
-
-```bash
-docker compose -f docker-compose.dev.yml run --rm app php artisan key:generate
-```
-
-## 3. Start Development Environment
+## Start Development Environment
 
 ```bash
 docker compose -f docker-compose.dev.yml up --build
 ```
+
+Application:
+
+```text
+http://localhost:8000
+```
+
+Vite Dev Server:
+
+```text
+http://localhost:5173
+```
+
+---
 
 # Development Services
 
-| Service | URL                                            |
-| ------- | ---------------------------------------------- |
-| Laravel | [http://localhost:8000](http://localhost:8000) |
-| Vite    | [http://localhost:5173](http://localhost:5173) |
-| MySQL   | localhost:3306                                 |
+| Service | Description               |
+| ------- | ------------------------- |
+| app     | PHP-FPM Laravel container |
+| vite    | Vite development server   |
+| nginx   | Nginx reverse proxy       |
+| db      | MySQL database            |
 
-# Devcontainer Usage
+---
 
-Open the project in VSCode:
+# Environment Files
+
+Development environment:
 
 ```text
-F1 → Dev Containers: Reopen in Container
+.env.dev
 ```
 
-This gives:
+Production environment:
 
-- PHP inside container
-- Composer installed
-- Node installed
-- Git configured
-- Consistent environment across machines
+```text
+.env.prod
+```
+
+---
+
+# Database
+
+The MySQL database runs inside Docker during development.
+
+Connection values are loaded automatically from:
+
+```text
+.env.dev
+```
+
+Database data is persisted through Docker volumes.
+
+---
 
 # Production Deployment
 
-## Production Environment Variables
+Production deployment is handled through GitHub Actions over SSH.
 
-Create:
+The production server runs:
 
-```text
-backend/.env.prod
-```
+- PHP
+- Composer
+- Node.js
+- npm
 
-Example:
+without Docker.
 
-```env
-APP_NAME=Laravel
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://your-domain.com
+---
 
-APP_KEY=base64:YOUR_KEY
-
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=laravel
-DB_PASSWORD=your_password
-```
-
-# Start Production Stack
+## Manual Deployment
 
 ```bash
-docker compose -f docker-compose.prod.yml up -d --build
+./deploy.sh
 ```
+
+Deployment script automatically:
+
+- pulls latest changes
+- installs Composer dependencies
+- installs Node dependencies
+- builds Vite assets
+- clears Laravel caches
+- runs migrations
+
+---
 
 # GitHub Actions Deployment
 
-The project supports automatic deployment through GitHub Actions.
-
-Required GitHub repository secrets:
-
-| Secret          | Description            |
-| --------------- | ---------------------- |
-| SERVER_IP       | Server IP or domain    |
-| SERVER_USER     | SSH deployment user    |
-| SSH_PRIVATE_KEY | Private deployment key |
-
-# Suggested Production Server Setup
-
-Recommended architecture:
+Production deployment is triggered automatically on push to:
 
 ```text
-Host Machine
-├── Nginx Reverse Proxy
-├── Cloudflare
-└── Docker
-    ├── Laravel Stack
-    └── MySQL
+main
 ```
 
-The host machine handles:
+Required GitHub Secrets:
 
-- SSL termination
-- Reverse proxying
-- Multiple services/domains
-- Cloudflare integration
+| Secret          | Description                |
+| --------------- | -------------------------- |
+| SERVER_IP       | Production server IP       |
+| SERVER_USER     | SSH username               |
+| SSH_PRIVATE_KEY | Private SSH deployment key |
 
-Docker handles:
+---
 
-- Application isolation
-- Reproducibility
-- Dependency management
+# Production URL
+
+Example university hosting structure:
+
+```text
+https://tweban.dii.univpm.it/~grp_04/laraProject/public
+```
+
+---
 
 # Useful Commands
 
-## Rebuild Containers
+## Laravel
+
+```bash
+php artisan migrate
+php artisan optimize:clear
+php artisan route:list
+```
+
+## Docker
 
 ```bash
 docker compose -f docker-compose.dev.yml up --build
-```
 
-## Stop Containers
-
-```bash
 docker compose -f docker-compose.dev.yml down
 ```
 
-## Laravel Artisan
+## Frontend
 
 ```bash
-docker compose -f docker-compose.dev.yml exec app php artisan migrate
+npm run dev
+
+npm run build
 ```
 
-## NPM
+---
 
-```bash
-docker compose -f docker-compose.dev.yml exec vite npm install
-```
+# Technologies
+
+- Laravel
+- PHP 8.3
+- Docker
+- MySQL 8
+- Nginx
+- Vite
+- GitHub Actions
+
+---
+
+# License
+
+This project is open-source and available under the MIT license.

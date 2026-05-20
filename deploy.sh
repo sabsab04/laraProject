@@ -1,13 +1,15 @@
 #!/bin/bash
 
-set -e # Exit on first error
+set -e
 
-echo "Pulling latest code..."
-git config --global --add safe.directory "$(pwd)"  # Fix Git safe-dir issue in some CI environments
-git pull origin main
+git pull
 
-echo "Starting containers..."
-docker compose -f docker-compose.prod.yml up -d --build
+composer install --no-interaction --prefer-dist --optimize-autoloader
 
-echo "Reloading Nginx reverse proxy..."
-sudo nginx -t && sudo nginx -s reload
+npm install
+
+npm run build
+
+php artisan optimize:clear
+
+php artisan migrate --force
