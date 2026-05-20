@@ -1,0 +1,21 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  "eslint.run": "onType",
+
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+
+  "files.eol": "\n",
+
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true,
+    "**/.git/**": true,
+    "**/node_modules/**": true,
+    "**/.vscode/**": true
+  }
+}
