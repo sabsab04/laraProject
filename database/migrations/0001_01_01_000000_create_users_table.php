@@ -6,17 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            
+            // Dati Base richiesti dal progetto
             $table->string('name');
+            $table->string('surname')->nullable();
+            $table->date('birth_date')->nullable(); // <-- Aggiunta la data di nascita!
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            
+            // Dati Progetto (Livelli e Organizzazione)
+            $table->tinyInteger('role')->default(2); 
+            $table->string('organization')->nullable(); 
+
+            // Campi di sistema Laravel
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,9 +45,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
