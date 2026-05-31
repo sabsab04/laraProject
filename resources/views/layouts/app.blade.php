@@ -27,18 +27,34 @@
         
         <aside class="sidebar">
          <ul class="nav-links">
-          <li><a href="#sezione-home" class="active"><i class="fa-solid fa-image"></i> Home</a></li>
-          <li><a href="#"><i class="fa-regular fa-face-smile"></i> Eventi</a></li>
-          <li><a href="#sezione-chi-siamo"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
-          <li><a href="#sezione-dove-siamo"><i class="fa-solid fa-location-dot"></i> Dove siamo</a></li>
-          <li><a href="#"><i class="fa-regular fa-envelope"></i> Contatti</a></li>
+          <li><a href="/"><i class="fa-solid fa-image"></i> Home</a></li>
+<li><a href="#"><i class="fa-regular fa-face-smile"></i> Eventi</a></li>
+<li><a href="/#sezione-chi-siamo"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
+<li><a href="/dove-siamo"><i class="fa-solid fa-location-dot"></i> Dove siamo</a></li>
+<li><a href="#"><i class="fa-regular fa-envelope"></i> Contatti</a></li>
+          
          </ul>
 
-            <div class="auth-buttons">
-                <a href="#" class="btn btn-primary">ACCEDI</a>
-                <a href="#" class="btn btn-outline">REGISTRATI</a>
-            </div>
-        </aside>
+         @auth
+        <ul class="nav-links">
+        <li><a href="/eventimiei"><i class="fa-solid fa-music"></i> I miei eventi</a></li>
+        <li><a href="/dati-personali"><i class="fa-solid fa-gear"></i> Dati personali</a></li>
+       </ul>
+        @endauth
+
+<div class="auth-buttons">
+    @auth
+        <a href="/dashboard" class="btn btn-primary">{{ Auth::user()->email }}</a>
+        <form method="POST" action="/logout">
+            @csrf
+            <button type="submit" class="btn btn-outline">LOG OUT</button>
+        </form>
+    @else
+        <a href="/login" class="btn btn-primary">ACCEDI</a>
+        <a href="/register" class="btn btn-outline">REGISTRATI</a>
+    @endauth
+</div>
+  </aside>
 
         <div class="main-wrapper">
             <main class="content">
