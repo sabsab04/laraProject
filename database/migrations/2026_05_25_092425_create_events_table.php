@@ -17,16 +17,17 @@ return new class extends Migration
         $table->foreignId('organizer_id')->constrained('users')->onDelete('cascade'); 
         
         // Dati Base
-        $table->string('title');
-        $table->text('description');
-        $table->text('program');
-        $table->date('event_date');
-        $table->time('event_time');
-        $table->string('city');
-        $table->string('venue');
-        $table->decimal('ticket_price', 8, 2);
-        $table->integer('available_tickets');
-        $table->text('directions')->nullable();
+        $table->string('titolo');
+        $table->text('descrizione');
+        $table->string('punti_riferimento')->nullable();
+        
+        $table->date('data');
+        $table->string('orario'); // Es: "10:00 - 12:00"
+        $table->string('citta');
+        $table->string('luogo');
+        $table->integer('posti_disponibili');
+        $table->decimal('costo', 8, 2)->default(0.00);
+        $table->string('immagine')->default('default.jpg'); // Salveremo qui il nome del file (es: "evento1.jpg")
         
         // Funzionalità Opzionale: Sconti Last-Minute 
         $table->integer('last_minute_days')->nullable(); 

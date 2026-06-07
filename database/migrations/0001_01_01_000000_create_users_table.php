@@ -14,14 +14,12 @@ return new class extends Migration
             // Dati Base richiesti dal progetto
             $table->string('name');
             $table->string('surname')->nullable();
-            $table->date('birth_date')->nullable(); // <-- Aggiunta la data di nascita!
+            $table->date('birth_date')->nullable();
             $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             
             // Dati Progetto (Livelli e Organizzazione)
-            $table->tinyInteger('role')->default(2); 
+            $table->string('role',20)->default('user'); 
             $table->string('organization')->nullable(); 
 
             // Campi di sistema Laravel
@@ -29,11 +27,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();

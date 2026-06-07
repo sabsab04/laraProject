@@ -27,10 +27,10 @@
         
         <aside class="sidebar">
          <ul class="nav-links">
-          <li><a href="#sezione-home" class="active"><i class="fa-solid fa-image"></i> Home</a></li>
-          <li><a href="#"><i class="fa-regular fa-face-smile"></i> Eventi</a></li>
-          <li><a href="#sezione-chi-siamo"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
-          <li><a href="#sezione-dove-siamo"><i class="fa-solid fa-location-dot"></i> Dove siamo</a></li>
+          <li><a href="{{ url('/') }}" class="link-home {{ request()->is('/') ? 'active' : '' }}"><i class="fa-regular fa-image"></i> Home</a></li>
+          <li><a href="{{ route('eventi') }}" class="{{ request()->routeIs('eventi') || request()->routeIs('evento.dettaglio') ? 'active' : '' }}"><i class="fa-regular fa-face-smile"></i> Eventi</a></li>
+          <li><a href="{{ url('/') }}#chi-siamo" class="link-chi-siamo {{ request()->is('/') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
+          <li><a href="{{ route('dove-siamo') }}" class="{{ request()->routeIs('dove-siamo') ? 'active' : '' }}"><i class="fa-solid fa-location-dot"></i> Dove siamo</a></li>
           <li><a href="#"><i class="fa-regular fa-envelope"></i> Contatti</a></li>
          </ul>
 
@@ -51,35 +51,6 @@
         </div>
 
     </div>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Prendiamo il contenitore che scorre, i link e le sezioni
-            const mainWrapper = document.querySelector('.main-wrapper');
-            const navLinks = document.querySelectorAll('.nav-links a');
-            const sections = document.querySelectorAll('[id^="sezione-"]');
-
-            mainWrapper.addEventListener('scroll', () => {
-                let currentId = 'sezione-home'; // Sezione di default
-
-                // Controlla quale sezione è attualmente visibile
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    // Se lo scroll supera la cima della sezione (con un po' di margine)
-                    if (mainWrapper.scrollTop >= sectionTop - 100) {
-                        currentId = section.getAttribute('id');
-                    }
-                });
-
-                // Rimuovi la classe active da tutti i link e mettila solo a quello giusto
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + currentId) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
