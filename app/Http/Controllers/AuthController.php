@@ -13,23 +13,23 @@ class AuthController extends Controller
     }
 
     // Gestisce la richiesta di login
-  public function login(Request $request)
-    {
+  
+    public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required',
+        'password' => 'required',
+    ]);
 
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect('/dashboard');
-        }
-
-        return back()->withErrors([
-            'email' => 'Credenziali non corrette.',
-        ]);
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $request->session()->regenerate();
+        return redirect('/dashboard');
     }
+
+    return back()->withErrors([
+        'email' => 'Credenziali non corrette.',
+    ]);
+}
 
     // Logout
   public function logout(Request $request)
@@ -68,7 +68,5 @@ public function register(Request $request)
     Auth::login($user);
     return redirect('/dashboard');
 }
-
-
 
 }

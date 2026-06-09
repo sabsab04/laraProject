@@ -5,8 +5,8 @@
 <title>UniFun - Registrati</title>
 <style>
 body { background-color: #1a1a1a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-.register-container { display: flex; width: 850px; height: 600px; border-radius: 12px; overflow: hidden; }
-.register-left { background-color: #7b2d3e; background-image: radial-gradient(ellipse at 30% 50%, #5a1e2e 0%, transparent 60%), radial-gradient(ellipse at 70% 20%, #9b3d52 0%, transparent 50%); width: 45%; display: flex; align-items: center; justify-content: center; }
+.register-container { display: flex; width: 850px; height: 550px; border-radius: 12px; overflow: hidden; }
+.register-left { background-color: #7b2d3e; width: 45%; display: flex; align-items: center; justify-content: center; }
 .register-left h1 { color: white; font-size: 80px; font-weight: 900; line-height: 1; text-align: center; }
 .register-right { background-color: #fdf0f0; width: 55%; padding: 50px 40px; display: flex; flex-direction: column; justify-content: center; }
 .register-right h2 { font-size: 32px; font-weight: 900; margin-bottom: 20px; }
@@ -35,19 +35,22 @@ body { background-color: #1a1a1a; display: flex; justify-content: center; align-
 @csrf
 <div class="form-group">
 <label>Nome</label>
-<input type="text" name="name" placeholder="Enter your name" required>
+<input type="text" name="name" placeholder="Es. Giulio" required>
 </div>
+
 <div class="form-group">
-<label>Cognome</label>
-<input type="text" name="surname" placeholder="Enter your surname" required>
+    <label>Cognome</label>
+    <input type="text" name="surname" placeholder="Es. Bianchi" required>
 </div>
+
 <div class="form-group">
-<label>Email</label>
-<input type="email" name="email" placeholder="Enter your email" required>
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Es. giulio@email.com" required>
 </div>
+
 <div class="form-group">
-<label>Password</label>
-<input type="password" name="password" placeholder="Enter your password" required>
+    <label>Password</label>
+<input type="password" name="password" placeholder="Min. 6 caratteri" required>
 </div>
 <button type="submit" class="btn-register">Registrati</button>
 </form>

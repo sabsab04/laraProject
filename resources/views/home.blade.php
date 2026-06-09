@@ -28,16 +28,18 @@
    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px;">
     
     @forelse($events as $event)
-    <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <a href="{{ route('evento.dettaglio', $event->id) }}" style="text-decoration: none; color: inherit;">
+<div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <img src="{{ $event->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $event->immagine) }}" alt="{{ $event->titolo }}" style="width: 100%; height: 150px; object-fit: cover;">
         
-        <img src="{{ asset('img/events/' . $event->immagine) }}" alt="{{ $event->titolo }}" style="width: 100%; height: 150px; object-fit: cover;">
-        
+       
         <div style="padding: 15px;">
             <h4 style="margin: 0; font-size: 14px; color: #333;">{{ $event->titolo }}</h4>
             <p style="margin: 5px 0 0 0; color: #9d4855; font-weight: bold;">€ {{ $event->costo }}</p>
             <p style="margin: 0; font-size: 12px; color: #666;"><i class="fa-solid fa-location-dot"></i> {{ $event->citta }}</p>
         </div>
     </div>
+</a>
     @empty
        <p style="grid-column: span 4; text-align: center; color: #666;">Nessun evento disponibile al momento.</p>
     @endforelse
