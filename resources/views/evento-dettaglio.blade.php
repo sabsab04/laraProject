@@ -27,7 +27,15 @@
                 <li><i class="fa-regular fa-clock"></i> <strong>Orario</strong><br>{{ $evento->orario }}</li>
                 <li><i class="fa-solid fa-location-dot"></i> <strong>Luogo</strong><br>{{ $evento->luogo }}</li>
                 <li><i class="fa-regular fa-user"></i> <strong>Posti disponibili</strong><br>{{ $evento->posti_disponibili }}</li>
-                <li><i class="fa-regular fa-star"></i> <strong>Costo</strong><br>{{ $evento->costo == 0 ? 'Gratuito' : $evento->costo . '€' }}</li>
+                <li><i class="fa-regular fa-star"></i> <strong>Costo</strong><br>
+                    @if(isset($evento->prezzo_finale) && (float)$evento->prezzo_finale < (float)$evento->costo)
+                        <span style="text-decoration: line-through; color: #888;">{{ $evento->costo }}€</span>
+                        <span style="color: #a24a5b; font-weight: bold;">{{ $evento->prezzo_finale }}€ <span style="font-size: 12px;">(-{{ $evento->last_minute_discount_percentage }}%)</span></span>
+                    @else
+                        {{ $evento->costo == 0 ? 'Gratuito' : $evento->costo . '€' }}
+                    @endif
+                </li>
+                <li><i class="fa-solid fa-users"></i> <strong>Parteciperò</strong><br>{{ $conteggio_partecipanti }} persone intendono partecipare</li>
             </ul>
         </div>
 
@@ -51,19 +59,18 @@
                     <label style="display: flex; align-items: center; gap: 8px;"><input type="radio" name="pagamento" value="carta"> Carta di debito</label>
                     <label style="display: flex; align-items: center; gap: 8px;"><input type="radio" name="pagamento" value="dal_vivo"> Dal vivo</label>
                 </div>
+                <button type="submit" style="width: 100%; background-color: #a24a5b; color: white; border: none; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer;">COMPRA</button>
+            </form>
 
-               <button type="submit" style="width: 100%; background-color: #a24a5b; color: white; border: none; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer;">COMPRA</button>
-</form>
-
-<form method="POST" action="{{ route('partecipa', $evento->id) }}" style="margin-top: 15px;">
-    @csrf
-    @php
-        $partecipa = \App\Models\Attendance::where('user_id', Auth::id())->where('event_id', $evento->id)->exists();
-    @endphp
-    <button type="submit" style="width: 100%; background-color: white; color: #a24a5b; border: 2px solid #a24a5b; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer;">
-        {{ $partecipa ? '✅ Parteciperò' : 'Parteciperò' }}
-    </button>
-</form>
+            <form method="POST" action="{{ route('partecipa', $evento->id) }}" style="margin-top: 15px;">
+                @csrf
+                @php
+                    $partecipa = \App\Models\Attendance::where('user_id', Auth::id())->where('event_id', $evento->id)->exists();
+                @endphp
+                <button type="submit" style="width: 100%; background-color: white; color: #a24a5b; border: 2px solid #a24a5b; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer;">
+                    {{ $partecipa ? '✅ Parteciperò' : 'Parteciperò' }}
+                </button>
+            </form>
 
             @else
             <p>Devi <a href="/login" style="color: #a24a5b;">accedere</a> per acquistare un biglietto.</p>
@@ -80,10 +87,15 @@
             <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $evento->immagine) }}" style="width: 120px; height: 80px; object-fit: cover; border-radius: 8px;">
             <h3>{{ $evento->titolo }}</h3>
         </div>
-        <p><strong>Numero biglietti acquistati</strong><br><span id="riepilogo-quantita">1 biglietto</span></p>
-        <p style="margin-top: 15px;"><strong>Modalità di pagamento scelta</strong><br><span id="riepilogo-pagamento">Paypal</span></p>
-<button onclick="confermaAcquisto()" style="width: 100%; background-color: #a24a5b; color: white; border: none; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer; margin-top: 20px;">CHIUDI</button>
-</div>
+        <p><i class="fa-regular fa-calendar"></i> <strong>Data:</strong> {{ \Carbon\Carbon::parse($evento->data)->format('d F Y') }}</p>
+        <p><i class="fa-regular fa-clock"></i> <strong>Orario:</strong> {{ $evento->orario }}</p>
+        <p><i class="fa-solid fa-location-dot"></i> <strong>Luogo:</strong> {{ $evento->luogo }}</p>
+        <p style="margin-top: 10px;"><strong>Numero biglietti acquistati</strong><br><span id="riepilogo-quantita">1 biglietto</span></p>
+        <p style="margin-top: 10px;"><strong>Modalità di pagamento scelta</strong><br><span id="riepilogo-pagamento">Paypal</span></p>
+        <p style="margin-top: 10px;"><strong>Prezzo totale:</strong> <span id="riepilogo-prezzo" style="color: #a24a5b; font-weight: bold;"></span></p>
+        <p style="color: #7b2d3e; font-style: italic; margin-top: 10px;">Grazie per aver acquistato con noi! 🎉</p>
+        <button onclick="confermaAcquisto()" style="width: 100%; background-color: #a24a5b; color: white; border: none; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer; margin-top: 20px;">CHIUDI</button>
+    </div>
 </div>
 
 <script>
@@ -97,10 +109,12 @@ function cambiaQ(val) {
 
 document.getElementById('form-acquisto')?.addEventListener('submit', function(e) {
     e.preventDefault();
-    let q = document.getElementById('quantita').innerText;
+    let q = parseInt(document.getElementById('quantita').innerText);
     let p = document.querySelector('input[name="pagamento"]:checked').value;
+    let prezzo = {{ isset($evento->prezzo_finale) ? $evento->prezzo_finale : $evento->costo }};
     document.getElementById('riepilogo-quantita').innerText = q + ' biglietto/i';
     document.getElementById('riepilogo-pagamento').innerText = p;
+    document.getElementById('riepilogo-prezzo').innerText = (prezzo * q).toFixed(2) + '€';
     document.getElementById('modal-riepilogo').style.display = 'flex';
 });
 

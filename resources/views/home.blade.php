@@ -35,7 +35,12 @@
        
         <div style="padding: 15px;">
             <h4 style="margin: 0; font-size: 14px; color: #333;">{{ $event->titolo }}</h4>
-            <p style="margin: 5px 0 0 0; color: #9d4855; font-weight: bold;">€ {{ $event->costo }}</p>
+           @if($event->prezzo_finale < $event->costo)
+<p style="margin: 5px 0 0 0; color: #888; font-size: 11px; text-decoration: line-through;">€ {{ $event->costo }}</p>
+<p style="margin: 0; color: #9d4855; font-weight: bold;">€ {{ $event->prezzo_finale }} <span style="font-size: 11px;">(-{{ $event->last_minute_discount_percentage }}%)</span></p>
+@else
+<p style="margin: 5px 0 0 0; color: #9d4855; font-weight: bold;">€ {{ $event->costo }}</p>
+@endif
             <p style="margin: 0; font-size: 12px; color: #666;"><i class="fa-solid fa-location-dot"></i> {{ $event->citta }}</p>
         </div>
     </div>

@@ -104,4 +104,15 @@ public function incassi()
     return view('organizer.incassi', compact('events', 'totale'));
 }
 
+public function analisiVendite()
+{
+    $events = Event::where('organizer_id', Auth::id())->get();
+    
+    foreach ($events as $event) {
+        $event->biglietti_venduti = $event->purchases()->sum('quantita');
+    }
+    
+    return view('organizer.analisi-vendite', compact('events'));
+}
+
 }

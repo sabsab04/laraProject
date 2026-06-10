@@ -52,7 +52,7 @@
         <ul class="nav-links" style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
             <li><a href="{{ route('organizer.eventi') }}"><i class="fa-solid fa-music"></i> Eventi</a></li>
             <li><a href="{{ route('organizer.sconti') }}"><i class="fa-solid fa-dollar-sign"></i> Sconti</a></li>
-            <li><a href="#"><i class="fa-solid fa-chart-line"></i> Analisi vendite</a></li>
+            <li><a href="{{ route('organizer.analisi') }}"><i class="fa-solid fa-chart-line"></i> Analisi vendite</a></li>
             <li><a href="{{ route('organizer.incassi') }}"><i class="fa-solid fa-dollar-sign"></i> Incassi</a></li>
         </ul>
         @endif

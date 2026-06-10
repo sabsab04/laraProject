@@ -54,6 +54,7 @@ public function register(Request $request)
         'name' => 'required',
         'surname' => 'required',
         'email' => 'required|email|unique:users',
+        'birth_date' => 'required|date',
         'password' => 'required|min:6',
     ]);
 
@@ -61,6 +62,7 @@ public function register(Request $request)
         'name' => $request->name,
         'surname' => $request->surname,
         'username' => explode('@', $request->email)[0],
+        'birth_date' => $request->birth_date,
         'email' => $request->email,
         'password' => $request->password,
     ]);

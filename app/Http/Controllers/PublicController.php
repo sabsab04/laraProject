@@ -1,18 +1,28 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\Models\Event; // NON DIMENTICARE QUESTA RIGA! Serve a importare il Modello
+use App\Models\Event;
+use Carbon\Carbon;
 
 class PublicController extends Controller
 {
-    public function home()
-    {
-        // Vai nel DB, prendi gli eventi dal più recente, prendine al massimo 4
-        $events = Event::latest()->take(4)->get();
+   public function home()
+{
+    $events = Event::latest()->take(4)->get();
+    
+    foreach ($events as $event) {
+        $event->prezzo_finale = (float)$event->costo;
         
-        // Passa questi eventi alla vista 'home'
-        return view('home', compact('events'));
+        if ($event->last_minute_days && $event->last_minute_discount_percentage) {
+            $giorniMancanti = \Carbon\Carbon::now()->floatDiffInDays(\Carbon\Carbon::parse($event->data));
+            
+            if ($giorniMancanti <= $event->last_minute_days) {
+                $sconto = (float)$event->costo * ((float)$event->last_minute_discount_percentage / 100);
+                $event->prezzo_finale = round((float)$event->costo - $sconto, 2);
+            }
+        }
     }
+    
+    return view('home', compact('events'));
+}
 }
