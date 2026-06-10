@@ -21,8 +21,8 @@
     <div style="display: flex; align-items: center; justify-content: space-between; background-color: #f7f3f3; padding: 15px; border-radius: 20px; margin-bottom: 20px;">
     
     <div style="display: flex; align-items: center; gap: 20px;">
-        <img src="{{ asset('img/events/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="border-radius: 10px; object-fit: cover; width: 200px; height: 120px;">
-        
+        <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="border-radius: 10px; object-fit: cover; width: 200px; height: 120px;">
+
         <h3 style="font-size: 18px; color: #222; font-weight: 500; max-width: 250px;">
             {{ $evento->titolo }}
         </h3>
