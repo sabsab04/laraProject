@@ -27,13 +27,13 @@ body { background-color: #1a1a1a; display: flex; justify-content: center; align-
 <div class="login-right">
 <h2>Accedi</h2>
 @if ($errors->any())
-<div class="error-message">{{ $errors->first('email') }}</div>
+<div class="error-message">{{ $errors->first('username') }}</div>
 @endif
 <form method="POST" action="/login">
 @csrf
 <div class="form-group">
-<label>Email</label>
-<input type="email" name="email" required>
+    <label>Username</label>
+    <input type="text" name="username" required>
 </div>
 <div class="form-group">
 <label>Password</label>

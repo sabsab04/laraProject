@@ -38,6 +38,12 @@
                 <li><i class="fa-solid fa-users"></i> <strong>Parteciperò</strong><br>{{ $conteggio_partecipanti }} persone intendono partecipare</li>
             </ul>
         </div>
+        
+        <div style="flex: 1;">
+            <h3 style="color: #333; margin-bottom: 10px;">Informazioni sull'evento</h3>
+            <p style="color: #555; font-size: 14px; line-height: 1.6; margin-bottom: 25px; background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
+                {{ $evento->descrizione }}
+            </p>
 
         {{-- Form acquisto --}}
         <div style="flex: 1;">

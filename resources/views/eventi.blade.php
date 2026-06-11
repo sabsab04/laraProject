@@ -33,6 +33,7 @@
         </a>
     </div>
     @endforeach
+    
 
     <div style="display: flex; justify-content: center; gap: 10px; margin-top: 40px;">
 

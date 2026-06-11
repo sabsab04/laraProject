@@ -38,6 +38,17 @@ class DatabaseSeeder extends Seeder
                 'organization' => 'FunForYoungs',
                 'created_at' => now(), 
                 'updated_at' => now()
+            ],
+            [
+                'name' => '>Rosa', 
+                'surname' => 'Milli', 
+                'username' => 'adminadmin',
+                'password' => Hash::make('1234'), 
+                'role' => 'admin', 
+                'birth_date' => '2003-03-03',
+                'organization' => null,
+                'created_at' => now(), 
+                'updated_at' => now()
             ]
         ]);
 

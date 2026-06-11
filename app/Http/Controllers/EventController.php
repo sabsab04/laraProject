@@ -8,9 +8,43 @@ use Illuminate\Http\Request;
 class EventController extends Controller
 {
     // Mostra tutti gli eventi nella pagina principale
-    public function index()
+    public function index(Request $request)
     {
-        $eventi = Event::paginate(2); // Prende tutti gli eventi dal DB
+        $query = Event::query();
+
+        if ($request->filled('ricerca')) {
+            $termine = $request->ricerca;
+
+            // Passiamo $termine dentro la closure con 'use'
+            $query->where(function($q) use ($termine) {
+                
+                if (str_contains($termine, '*')) {
+                    // C'è l'asterisco: ricerca nella descrizione
+                    $termini = explode(' ', $termine);
+
+                    // Passiamo $termini dentro questa seconda closure
+                    $q->where(function($subQuery) use ($termini) {
+                        foreach ($termini as $index => $t) {
+                            $wildcardTerm = str_replace('*', '%', $t);
+                            
+                            if ($index === 0) {
+                                $subQuery->where('descrizione', 'LIKE', $wildcardTerm);
+                            } else {
+                                $subQuery->orWhere('descrizione', 'LIKE', $wildcardTerm);
+                            }
+                        }
+                    });
+                } else {
+                    // Niente asterisco: ricerca esatta sulla città
+                    // $termine qui è già disponibile perché lo abbiamo passato nel primo 'use'
+                    $q->where('citta', $termine);
+                }
+            });
+        }
+
+        $eventi = $query->paginate(2);
+        
+        // Passiamo i risultati alla vista
         return view('eventi', compact('eventi'));
     }
 
