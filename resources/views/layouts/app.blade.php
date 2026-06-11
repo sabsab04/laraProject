@@ -12,7 +12,6 @@
         <div class="logo-container">
             <i class="fa-regular fa-calendar-check"></i> UniFun
         </div>
-        
     </header>
     <div class="body-wrapper">
         <aside class="sidebar">
@@ -21,6 +20,7 @@
                     <li><a href="{{ route('admin.organizzatori') }}" class="{{ request()->routeIs('admin.organizzatori') ? 'active' : '' }}"><i class="fa-solid fa-person-walking"></i> Organizzatori</a></li>
                     <li><a href="{{ route('admin.clienti') }}" class="{{ request()->routeIs('admin.clienti') ? 'active' : '' }}"><i class="fa-regular fa-heart"></i> Clienti</a></li>
                     <li><a href="{{ route('admin.vendite') }}" class="{{ request()->routeIs('admin.vendite') ? 'active' : '' }}"><i class="fa-solid fa-arrow-trend-up"></i> Vendite</a></li>
+                    <li><a href="{{ route('admin.richieste') }}" class="{{ request()->routeIs('admin.richieste') ? 'active' : '' }}"><i class="fa-solid fa-envelope-open-text"></i> Richieste</a></li>
                 </ul>
                 <div class="auth-buttons" style="margin-top: 30px;">
                     <form method="POST" action="{{ url('/logout') }}">

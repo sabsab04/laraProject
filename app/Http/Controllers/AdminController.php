@@ -101,4 +101,34 @@ class AdminController extends Controller
         
         return redirect()->back()->with('success', 'Utente eliminato con successo!');
     }
+
+    public function richieste() {
+    $richieste = OrganizerRequest::where('status', 'pending')->get();
+    return view('admin.richieste', compact('richieste'));
+}
+
+public function approvaRichiesta($id) {
+    $richiesta = OrganizerRequest::findOrFail($id);
+    
+    User::create([
+        'name'         => $richiesta->name,
+        'surname'      => $richiesta->surname,
+        'email'        => $richiesta->email,
+        'organization' => $richiesta->organization,
+        'username'     => strtolower($richiesta->name . $richiesta->surname),
+        'password'     => Hash::make('password123'),
+        'role'         => 'organizer',
+        'birth_date'   => '2000-01-01',
+    ]);
+
+    $richiesta->update(['status' => 'approved']);
+    return redirect()->route('admin.richieste')->with('success', 'Organizzatore approvato!');
+}
+
+public function rifiutaRichiesta($id) {
+    $richiesta = OrganizerRequest::findOrFail($id);
+    $richiesta->update(['status' => 'rejected']);
+    return redirect()->route('admin.richieste')->with('success', 'Richiesta rifiutata.');
+}
+
 }

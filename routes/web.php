@@ -66,4 +66,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/organizzatori', [AdminController::class, 'storeOrganizzatore'])->name('admin.organizzatori.store');
     Route::put('/organizzatori/{id}', [AdminController::class, 'updateOrganizzatore'])->name('admin.organizzatori.update');
     Route::delete('/utenti/{id}', [AdminController::class, 'destroyUser'])->name('admin.utenti.destroy');
+    Route::get('/richieste', [AdminController::class, 'richieste'])->name('admin.richieste');
+Route::post('/richieste/{id}/approva', [AdminController::class, 'approvaRichiesta'])->name('admin.richieste.approva');
+Route::post('/richieste/{id}/rifiuta', [AdminController::class, 'rifiutaRichiesta'])->name('admin.richieste.rifiuta');
 });
