@@ -8,7 +8,6 @@ use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\OrganizerRequestController;
 use App\Http\Controllers\AdminController;
-use App\Http\Middleware\CheckAdmin;
 
 Route::get('/', [PublicController::class, 'home']);
 Route::view('/dove-siamo', 'dove-siamo')->name('dove-siamo');
@@ -58,7 +57,7 @@ Route::middleware(['auth'])->prefix('organizer')->group(function () {
 });
 
 // Admin
-Route::middleware(['auth', CheckAdmin::class])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/organizzatori', [AdminController::class, 'organizzatori'])->name('admin.organizzatori');
     Route::get('/clienti', [AdminController::class, 'clienti'])->name('admin.clienti');
     Route::get('/vendite', [AdminController::class, 'vendite'])->name('admin.vendite');
