@@ -57,20 +57,14 @@ Route::middleware(['auth'])->prefix('organizer')->group(function () {
     Route::get('/analisi-vendite', [OrganizerController::class, 'analisiVendite'])->name('organizer.analisi');
 });
 
-// Gruppo di rotte protette per l'Admin
+// Admin
 Route::middleware(['auth', CheckAdmin::class])->prefix('admin')->group(function () {
-    
-    // Le tre pagine principali
     Route::get('/organizzatori', [AdminController::class, 'organizzatori'])->name('admin.organizzatori');
     Route::get('/clienti', [AdminController::class, 'clienti'])->name('admin.clienti');
     Route::get('/vendite', [AdminController::class, 'vendite'])->name('admin.vendite');
-    // Rotte per Creare e Modificare un organizzatore
     Route::get('/organizzatori/nuovo', [AdminController::class, 'createOrganizzatore'])->name('admin.organizzatori.create');
     Route::get('/organizzatori/{id}/modifica', [AdminController::class, 'editOrganizzatore'])->name('admin.organizzatori.edit');
-    // Rotte per Salvare e Aggiornare nel database
     Route::post('/organizzatori', [AdminController::class, 'storeOrganizzatore'])->name('admin.organizzatori.store');
     Route::put('/organizzatori/{id}', [AdminController::class, 'updateOrganizzatore'])->name('admin.organizzatori.update');
-    // Rotta per eliminare gli utenti (sia clienti che organizzatori)
     Route::delete('/utenti/{id}', [AdminController::class, 'destroyUser'])->name('admin.utenti.destroy');
-
 });
