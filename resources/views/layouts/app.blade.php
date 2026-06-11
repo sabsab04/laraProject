@@ -25,7 +25,7 @@
 <li><a href="{{ route('eventi') }}" class="{{ request()->routeIs('eventi') || request()->routeIs('evento.dettaglio') ? 'active' : '' }}"><i class="fa-regular fa-face-smile"></i> Eventi</a></li>
 <li><a href="{{ url('/') }}#chi-siamo" class="link-chi-siamo {{ request()->is('/') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
 <li><a href="{{ route('dove-siamo') }}" class="{{ request()->routeIs('dove-siamo') ? 'active' : '' }}"><i class="fa-solid fa-location-dot"></i> Dove siamo</a></li>
-<li><a href="#"><i class="fa-regular fa-envelope"></i> Contatti</a></li>
+<li><a href="{{ url('/contatti') }}"><i class="fa-regular fa-envelope"></i> Contatti</a></li>
 </ul>
 @auth
 <ul class="nav-links">
