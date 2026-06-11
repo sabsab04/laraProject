@@ -28,40 +28,42 @@
                         <button type="submit" class="btn btn-outline" style="width: 100%;">LOG OUT</button>
                     </form>
                 </div>
+
             @else
                 <ul class="nav-links">
                     <li><a href="{{ url('/') }}" class="link-home {{ request()->is('/') ? 'active' : '' }}"><i class="fa-regular fa-image"></i> Home</a></li>
                     <li><a href="{{ route('eventi') }}" class="{{ request()->routeIs('eventi') || request()->routeIs('evento.dettaglio') ? 'active' : '' }}"><i class="fa-regular fa-face-smile"></i> Eventi</a></li>
-                    <li><a href="{{ url('/') }}#chi-siamo" class="link-chi-siamo {{ request()->is('/') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
+                    <li><a href="{{ url('/') }}#chi-siamo"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
                     <li><a href="{{ route('dove-siamo') }}" class="{{ request()->routeIs('dove-siamo') ? 'active' : '' }}"><i class="fa-solid fa-location-dot"></i> Dove siamo</a></li>
                     <li><a href="{{ route('contatti') }}" class="{{ request()->routeIs('contatti') ? 'active' : '' }}"><i class="fa-regular fa-envelope"></i> Contatti</a></li>
                 </ul>
                 @auth
-                <ul class="nav-links">
-                    <li><a href="{{ url('/eventimiei') }}"><i class="fa-solid fa-music"></i> I miei eventi</a></li>
-                    <li><a href="{{ url('/dati-personali') }}"><i class="fa-solid fa-gear"></i> Dati personali</a></li>
-                </ul>
-                @endauth
-                <div class="auth-buttons">
-                    @auth
+                    @if(Auth::user()->role === 'organizer')
+                        <ul class="nav-links" style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                            <li><a href="{{ route('organizer.eventi') }}" class="{{ request()->routeIs('organizer.eventi') ? 'active' : '' }}"><i class="fa-solid fa-music"></i> I miei eventi</a></li>
+                            <li><a href="{{ route('organizer.incassi') }}" class="{{ request()->routeIs('organizer.incassi') ? 'active' : '' }}"><i class="fa-solid fa-dollar-sign"></i> Incassi</a></li>
+                            <li><a href="{{ route('organizer.sconti') }}" class="{{ request()->routeIs('organizer.sconti') ? 'active' : '' }}"><i class="fa-solid fa-tag"></i> Sconti</a></li>
+                            <li><a href="{{ route('organizer.analisi') }}" class="{{ request()->routeIs('organizer.analisi') ? 'active' : '' }}"><i class="fa-solid fa-chart-line"></i> Analisi vendite</a></li>
+                        </ul>
+                    @else
+                        <ul class="nav-links">
+                            <li><a href="{{ url('/eventimiei') }}"><i class="fa-solid fa-music"></i> I miei eventi</a></li>
+                            <li><a href="{{ url('/dati-personali') }}"><i class="fa-solid fa-gear"></i> Dati personali</a></li>
+                        </ul>
+                    @endif
+                    <div class="auth-buttons">
                         <a href="{{ url('/dashboard') }}" class="btn btn-primary">{{ Auth::user()->username ?? 'Profilo' }}</a>
                         <form method="POST" action="{{ url('/logout') }}">
                             @csrf
                             <button type="submit" class="btn btn-outline">LOG OUT</button>
                         </form>
-                        @if(Auth::user()->role === 'organizzatore')
-                        <ul class="nav-links" style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
-                            <li><a href="{{ route('organizer.eventi') }}"><i class="fa-solid fa-music"></i> Eventi</a></li>
-                            <li><a href="{{ route('organizer.sconti') }}"><i class="fa-solid fa-dollar-sign"></i> Sconti</a></li>
-                            <li><a href="{{ route('organizer.analisi') }}"><i class="fa-solid fa-chart-line"></i> Analisi vendite</a></li>
-                            <li><a href="{{ route('organizer.incassi') }}"><i class="fa-solid fa-dollar-sign"></i> Incassi</a></li>
-                        </ul>
-                        @endif
-                    @else
+                    </div>
+                @else
+                    <div class="auth-buttons">
                         <a href="{{ url('/login') }}" class="btn btn-primary">ACCEDI</a>
                         <a href="{{ url('/register') }}" class="btn btn-outline">REGISTRATI</a>
-                    @endauth
-                </div>
+                    </div>
+                @endauth
             @endif
         </aside>
         <div class="main-wrapper">
