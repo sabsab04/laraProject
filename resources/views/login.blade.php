@@ -29,7 +29,7 @@ body { background-color: #1a1a1a; display: flex; justify-content: center; align-
 @if ($errors->any())
 <div class="error-message">{{ $errors->first('username') }}</div>
 @endif
-<form method="POST" action="/login">
+<form method="POST" action="{{ url('/login') }}">
 @csrf
 <div class="form-group">
 <label>Nome utente</label>
