@@ -4,7 +4,7 @@
 
 @if(session('success'))
 <div id="success-msg" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: #d4edda; color: #155724; padding: 20px 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; font-weight: bold; font-size: 16px;">
-    ✅ {{ session('success') }}
+     {{ session('success') }}
 </div>
 <script>setTimeout(function() { document.getElementById('success-msg').style.display = 'none'; }, 3000);</script>
 @endif
@@ -14,7 +14,7 @@
 
     {{-- Card evento --}}
     <div style="background: #f7f3f3; border-radius: 16px; padding: 20px; display: flex; gap: 20px; align-items: center; margin-bottom: 30px;">
-        <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="width: 200px; height: 130px; object-fit: cover; border-radius: 12px;">
+        <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('img/events/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="width: 200px; height: 130px; object-fit: cover; border-radius: 12px;">
         <h2 style="font-size: 24px; font-weight: normal;">{{ $evento->titolo }}</h2>
     </div>
 

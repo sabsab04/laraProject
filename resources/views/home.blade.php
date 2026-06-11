@@ -22,7 +22,7 @@
 
     <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center;">
         <h3 style="color: #9d4855;">EVENTI PIÙ RECENTI</h3>
-        <a href="#" style="color: #666; text-decoration: none; font-size: 14px;">Vedi tutto <i class="fa-solid fa-caret-right"></i></a>
+        <a href="{{ route('eventi') }}" style="color: #666; text-decoration: none; font-size: 14px;">Vedi tutto <i class="fa-solid fa-caret-right"></i></a>
     </div>
 
    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px;">
@@ -30,7 +30,7 @@
     @forelse($events as $event)
     <a href="{{ route('evento.dettaglio', $event->id) }}" style="text-decoration: none; color: inherit;">
 <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <img src="{{ $event->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $event->immagine) }}" alt="{{ $event->titolo }}" style="width: 100%; height: 150px; object-fit: cover;">
+        <img src="{{ $event->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('img/events/' . $event->immagine) }}" alt="{{ $event->titolo }}" style="width: 100%; height: 150px; object-fit: cover;">
         
        
         <div style="padding: 15px;">

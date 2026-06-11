@@ -10,7 +10,7 @@ class EventController extends Controller
     // Mostra tutti gli eventi nella pagina principale
     public function index()
     {
-        $eventi = Event::all(); // Prende tutti gli eventi dal DB
+        $eventi = Event::paginate(2); // Prende tutti gli eventi dal DB
         return view('eventi', compact('eventi'));
     }
 

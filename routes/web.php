@@ -6,11 +6,14 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\OrganizerRequestController;
 
 Route::get('/', [PublicController::class, 'home']);
 Route::view('/dove-siamo', 'dove-siamo')->name('dove-siamo');
 Route::get('/eventi', [EventController::class, 'index'])->name('eventi');
 Route::get('/eventi/{id}', [EventController::class, 'show'])->name('evento.dettaglio');
+Route::view('/contatti', 'contatti')->name('contatti');
+Route::post('/contatti/richiesta', [OrganizerRequestController::class, 'store'])->name('organizer.request.store');
 
 // Rotte login
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
