@@ -12,7 +12,7 @@
         <div class="logo-container">
             <i class="fa-regular fa-calendar-check"></i> UniFun
         </div>
-        <div class="search-bar"></div>
+        
     </header>
     <div class="body-wrapper">
         <aside class="sidebar">
