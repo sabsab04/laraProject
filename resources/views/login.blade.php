@@ -32,8 +32,8 @@ body { background-color: #1a1a1a; display: flex; justify-content: center; align-
 <form method="POST" action="{{ url('/login') }}">
 @csrf
 <div class="form-group">
-<label>Nome utente</label>
-<input type="text" name="username" required>
+    <label>Username</label>
+    <input type="text" name="username" required>
 </div>
 <div class="form-group">
 <label>Password</label>
@@ -42,7 +42,7 @@ body { background-color: #1a1a1a; display: flex; justify-content: center; align-
 <button type="submit" class="btn-login">Accedi</button>
 </form>
 <div class="register-link">
-<a href="/register">Non hai un account? Registrati</a>
+<a href="{{ url('/register') }}">Non hai un account? Registrati</a>
 </div>
 </div>
 </div>
