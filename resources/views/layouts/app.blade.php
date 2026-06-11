@@ -4,101 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniFun - @yield('title', 'Home')</title>
-    
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
     <header class="topbar">
         <div class="logo-container">
             <i class="fa-regular fa-calendar-check"></i> UniFun
         </div>
-        
-        @if(!Auth::check() || Auth::user()->role !== 'admin')
-        <form action="{{ route('eventi') }}" method="GET" class="search-bar" style="display: flex; align-items: center; background: white; padding: 5px 15px; border-radius: 20px;">
-            <i class="fa-solid fa-bars" style="color: #666; margin-right: 10px;"></i>
-            
-            <input type="text" name="ricerca" placeholder="Cerca per città o descrizione..." value="{{ request('ricerca') }}" style="border: none; outline: none; background: transparent; width: 100%;">
-            
-            <button type="submit" style="background: none; border: none; cursor: pointer;">
-                <i class="fa-solid fa-magnifying-glass" style="color: #666;"></i>
-            </button>
-        </form>
-        @endif
     </header>
-
     <div class="body-wrapper">
-        
         <aside class="sidebar">
-            
             @if(Auth::check() && Auth::user()->role === 'admin')
-                
                 <ul class="nav-links">
                     <li><a href="{{ route('admin.organizzatori') }}" class="{{ request()->routeIs('admin.organizzatori') ? 'active' : '' }}"><i class="fa-solid fa-person-walking"></i> Organizzatori</a></li>
                     <li><a href="{{ route('admin.clienti') }}" class="{{ request()->routeIs('admin.clienti') ? 'active' : '' }}"><i class="fa-regular fa-heart"></i> Clienti</a></li>
                     <li><a href="{{ route('admin.vendite') }}" class="{{ request()->routeIs('admin.vendite') ? 'active' : '' }}"><i class="fa-solid fa-arrow-trend-up"></i> Vendite</a></li>
+                    <li><a href="{{ route('admin.richieste') }}" class="{{ request()->routeIs('admin.richieste') ? 'active' : '' }}"><i class="fa-solid fa-envelope-open-text"></i> Richieste</a></li>
                 </ul>
-
                 <div class="auth-buttons" style="margin-top: 30px;">
-                    <form method="POST" action="/logout">
+                    <form method="POST" action="{{ url('/logout') }}">
                         @csrf
                         <button type="submit" class="btn btn-outline" style="width: 100%;">LOG OUT</button>
                     </form>
                 </div>
 
             @else
-                
                 <ul class="nav-links">
                     <li><a href="{{ url('/') }}" class="link-home {{ request()->is('/') ? 'active' : '' }}"><i class="fa-regular fa-image"></i> Home</a></li>
                     <li><a href="{{ route('eventi') }}" class="{{ request()->routeIs('eventi') || request()->routeIs('evento.dettaglio') ? 'active' : '' }}"><i class="fa-regular fa-face-smile"></i> Eventi</a></li>
-                    <li><a href="{{ url('/') }}#chi-siamo" class="link-chi-siamo {{ request()->is('/') ? 'active' : '' }}"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
+                    <li><a href="{{ url('/') }}#chi-siamo"><i class="fa-solid fa-users"></i> Chi siamo</a></li>
                     <li><a href="{{ route('dove-siamo') }}" class="{{ request()->routeIs('dove-siamo') ? 'active' : '' }}"><i class="fa-solid fa-location-dot"></i> Dove siamo</a></li>
                     <li><a href="{{ route('contatti') }}" class="{{ request()->routeIs('contatti') ? 'active' : '' }}"><i class="fa-regular fa-envelope"></i> Contatti</a></li>
                 </ul>
-
                 @auth
-                <ul class="nav-links">
-                    <li><a href="/eventimiei"><i class="fa-solid fa-music"></i> I miei eventi</a></li>
-                    <li><a href="/dati-personali"><i class="fa-solid fa-gear"></i> Dati personali</a></li>
-                </ul>
-                @endauth
-
-                <div class="auth-buttons">
-                    @auth
-                        <a href="/dashboard" class="btn btn-primary">{{ Auth::user()->username ?? 'Profilo' }}</a>
-                        <form method="POST" action="/logout">
+                    @if(Auth::user()->role === 'organizer')
+                        <ul class="nav-links" style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                            <li><a href="{{ route('organizer.eventi') }}" class="{{ request()->routeIs('organizer.eventi') ? 'active' : '' }}"><i class="fa-solid fa-music"></i> I miei eventi</a></li>
+                            <li><a href="{{ route('organizer.incassi') }}" class="{{ request()->routeIs('organizer.incassi') ? 'active' : '' }}"><i class="fa-solid fa-dollar-sign"></i> Incassi</a></li>
+                            <li><a href="{{ route('organizer.sconti') }}" class="{{ request()->routeIs('organizer.sconti') ? 'active' : '' }}"><i class="fa-solid fa-tag"></i> Sconti</a></li>
+                            <li><a href="{{ route('organizer.analisi') }}" class="{{ request()->routeIs('organizer.analisi') ? 'active' : '' }}"><i class="fa-solid fa-chart-line"></i> Analisi vendite</a></li>
+                        </ul>
+                    @else
+                        <ul class="nav-links">
+                            <li><a href="{{ url('/eventimiei') }}"><i class="fa-solid fa-music"></i> I miei eventi</a></li>
+                            <li><a href="{{ url('/dati-personali') }}"><i class="fa-solid fa-gear"></i> Dati personali</a></li>
+                        </ul>
+                    @endif
+                    <div class="auth-buttons">
+                        <a href="{{ url('/dashboard') }}" class="btn btn-primary">{{ Auth::user()->username ?? 'Profilo' }}</a>
+                        <form method="POST" action="{{ url('/logout') }}">
                             @csrf
                             <button type="submit" class="btn btn-outline">LOG OUT</button>
                         </form>
-                        
-                        @if(Auth::user()->role === 'organizzatore')
-                        <ul class="nav-links" style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
-                            <li><a href="{{ route('organizer.eventi') }}"><i class="fa-solid fa-music"></i> Eventi</a></li>
-                            <li><a href="{{ route('organizer.sconti') }}"><i class="fa-solid fa-dollar-sign"></i> Sconti</a></li>
-                            <li><a href="{{ route('organizer.analisi') }}"><i class="fa-solid fa-chart-line"></i> Analisi vendite</a></li>
-                            <li><a href="{{ route('organizer.incassi') }}"><i class="fa-solid fa-dollar-sign"></i> Incassi</a></li>
-                        </ul>
-                        @endif
-                    @else
-                        <a href="/login" class="btn btn-primary">ACCEDI</a>
-                        <a href="/register" class="btn btn-outline">REGISTRATI</a>
-                    @endauth
-                </div>
-
+                    </div>
+                @else
+                    <div class="auth-buttons">
+                        <a href="{{ url('/login') }}" class="btn btn-primary">ACCEDI</a>
+                        <a href="{{ url('/register') }}" class="btn btn-outline">REGISTRATI</a>
+                    </div>
+                @endauth
             @endif
         </aside>
-
         <div class="main-wrapper">
             <main class="content">
                 @yield('content')
             </main>
-
             <footer class="footer">
                 @2026 univpm - Corso di tecnologie web
             </footer>
         </div>
-
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>

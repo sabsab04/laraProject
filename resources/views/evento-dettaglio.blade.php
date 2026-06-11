@@ -4,7 +4,7 @@
 
 @if(session('success'))
 <div id="success-msg" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: #d4edda; color: #155724; padding: 20px 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; font-weight: bold; font-size: 16px;">
-     {{ session('success') }}
+    ✅ {{ session('success') }}
 </div>
 <script>setTimeout(function() { document.getElementById('success-msg').style.display = 'none'; }, 3000);</script>
 @endif
@@ -12,14 +12,12 @@
 <div style="padding: 30px; max-width: 900px; margin: auto;">
     <h2 style="margin-bottom: 20px;">Acquista i tuoi biglietti!</h2>
 
-    {{-- Card evento --}}
     <div style="background: #f7f3f3; border-radius: 16px; padding: 20px; display: flex; gap: 20px; align-items: center; margin-bottom: 30px;">
-        <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('img/events/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="width: 200px; height: 130px; object-fit: cover; border-radius: 12px;">
+        <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="width: 200px; height: 130px; object-fit: cover; border-radius: 12px;">
         <h2 style="font-size: 24px; font-weight: normal;">{{ $evento->titolo }}</h2>
     </div>
 
     <div style="display: flex; gap: 30px;">
-        {{-- Dettagli evento --}}
         <div style="flex: 1; background: #f7f3f3; border-radius: 16px; padding: 25px;">
             <h4 style="color: #a24a5b; margin-bottom: 15px;">DETTAGLI EVENTO</h4>
             <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: #444;">
@@ -38,15 +36,13 @@
                 <li><i class="fa-solid fa-users"></i> <strong>Parteciperò</strong><br>{{ $conteggio_partecipanti }} persone intendono partecipare</li>
             </ul>
         </div>
-        
+
         <div style="flex: 1;">
             <h3 style="color: #333; margin-bottom: 10px;">Informazioni sull'evento</h3>
             <p style="color: #555; font-size: 14px; line-height: 1.6; margin-bottom: 25px; background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #eee;">
                 {{ $evento->descrizione }}
             </p>
 
-        {{-- Form acquisto --}}
-        <div style="flex: 1;">
             @auth
             <form method="POST" action="{{ route('acquista', $evento->id) }}" id="form-acquisto">
                 @csrf
@@ -57,7 +53,6 @@
                     <input type="hidden" name="quantita" id="input-quantita" value="1">
                     <button type="button" onclick="cambiaQ(1)" style="width: 35px; height: 35px; border-radius: 50%; border: 1px solid #ccc; background: white; font-size: 18px; cursor: pointer;">+</button>
                 </div>
-
                 <h3 style="margin-bottom: 15px;">Modalità di pagamento</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">
                     <label style="display: flex; align-items: center; gap: 8px;"><input type="radio" name="pagamento" value="paypal" checked> Paypal</label>
@@ -79,7 +74,7 @@
             </form>
 
             @else
-            <p>Devi <a href="/login" style="color: #a24a5b;">accedere</a> per acquistare un biglietto.</p>
+            <p>Devi <a href="{{ url('/login') }}" style="color: #a24a5b;">accedere</a> per acquistare un biglietto.</p>
             @endauth
         </div>
     </div>
