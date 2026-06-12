@@ -47,7 +47,7 @@
         @endphp
         @forelse($attendances as $attendance)
             <div style="background: white; border-radius: 16px; padding: 15px; width: 200px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                <img src="{{ $attendance->event->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $attendance->event->immagine) }}" style="width: 100%; border-radius: 8px; height: 120px; object-fit: cover;">
+                <img src="{{ $attendance->event->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('img/events/' . $attendance->event->immagine) }}" style="width: 100%; border-radius: 8px; height: 120px; object-fit: cover;">
                 <p style="font-weight: bold; margin: 8px 0 4px;">{{ $attendance->event->titolo }}</p>
                 <p style="color: #888; font-size: 13px; margin: 4px 0;">
                     <i class="fa-regular fa-calendar"></i> {{ \Carbon\Carbon::parse($attendance->event->data)->format('d F Y') }}
@@ -56,7 +56,7 @@
                     <i class="fa-regular fa-clock"></i> {{ $attendance->event->orario }}
                 </p>
                 <a href="{{ route('evento.dettaglio', $attendance->event->id) }}" style="display: block; margin-top: 10px; background-color: #7b2d3e; color: white; text-align: center; padding: 8px; border-radius: 8px; text-decoration: none; font-size: 13px;">
-                    🎟️ Compra un biglietto ora!
+                    Compra un biglietto ora!
                 </a>
             </div>
         @empty

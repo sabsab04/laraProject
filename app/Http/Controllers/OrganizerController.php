@@ -101,6 +101,9 @@ public function incassi()
 {
     $events = Event::where('organizer_id', Auth::id())->get();
     $totale = 0;
+    foreach ($events as $event) {
+        $totale += $event->purchases()->sum('totale');
+    }
     return view('organizer.incassi', compact('events', 'totale'));
 }
 

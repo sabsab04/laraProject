@@ -8,6 +8,7 @@ use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\OrganizerRequestController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', [PublicController::class, 'home']);
 Route::view('/dove-siamo', 'dove-siamo')->name('dove-siamo');
@@ -22,9 +23,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [ProfileController::class, 'showDatiPersonali']);
+    Route::get('/dati-personali', [ProfileController::class, 'showDatiPersonali']);
+    Route::get('/dati-personali/modifica', [ProfileController::class, 'editDatiPersonali']);
+    Route::put('/dati-personali/modifica', [ProfileController::class, 'updateDatiPersonali']);
+});
 
 // Registrazione
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -42,7 +46,7 @@ Route::get('/eventimiei', function () {
 Route::post('/eventi/{id}/acquista', [PurchaseController::class, 'store'])->name('acquista')->middleware('auth');
 Route::post('/eventi/{id}/partecipa', [AttendanceController::class, 'store'])->name('partecipa')->middleware('auth');
 
-// Livello 2 - Organizzatori
+//Organizzatori
 Route::middleware(['auth'])->prefix('organizer')->group(function () {
     Route::get('/eventi', [OrganizerController::class, 'index'])->name('organizer.eventi');
     Route::get('/eventi/nuovo', [OrganizerController::class, 'create'])->name('organizer.create');

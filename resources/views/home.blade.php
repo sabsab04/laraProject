@@ -23,7 +23,7 @@
     @forelse($events as $event)
 <a href="{{ route('evento.dettaglio', $event->id) }}" style="text-decoration: none; color: inherit;">
 <div style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-<img src="{{ $event->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $event->immagine) }}" alt="{{ $event->titolo }}" style="width: 100%; height: 150px; object-fit: cover;">
+<img src="{{ $event->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('img/events/' . $event->immagine) }}" alt="{{ $event->titolo }}" style="width: 100%; height: 150px; object-fit: cover;">
 <div style="padding: 15px;">
 <h4 style="margin: 0; font-size: 14px; color: #333;">{{ $event->titolo }}</h4>
 @if(isset($event->prezzo_finale) && (float)$event->prezzo_finale < (float)$event->costo)

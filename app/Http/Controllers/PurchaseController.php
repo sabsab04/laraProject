@@ -12,12 +12,12 @@ class PurchaseController extends Controller
     public function store(Request $request, $event_id)
     {
         $event = Event::findOrFail($event_id);
-
-        if ($event->posti_disponibili <= 0) {
-            return back()->with('error', 'Nessun posto disponibile!');
+        $quantita = $request->quantita ?? 1;
+        
+        if ($event->posti_disponibili <= 0 || $quantita > $event->posti_disponibili) {
+            return back()->with('error', 'Operazione annullata: i posti per questo evento sono esauriti o insufficienti!');
         }
 
-        // Calcola il prezzo con eventuale sconto
         $prezzo = (float)$event->costo;
         if ($event->last_minute_days && $event->last_minute_discount_percentage) {
             $giorniMancanti = \Carbon\Carbon::now()->floatDiffInDays(\Carbon\Carbon::parse($event->data));
@@ -27,17 +27,17 @@ class PurchaseController extends Controller
             }
         }
 
-        $quantita = $request->quantita ?? 1;
-
+        // Salvataggio nel database
         Purchase::create([
             'user_id'        => Auth::id(),
             'event_id'       => $event->id,
             'quantita'       => $quantita,
             'totale'         => $prezzo * $quantita,
             'payment_method' => $request->pagamento ?? 'paypal',
-            'tickets_count'  => $quantita,
+            // Eliminata la riga tickets_count che causava il crash SQL
         ]);
 
+        // Scala i posti dal totale
         $event->decrement('posti_disponibili', $quantita);
 
         return back()->with('success', 'Biglietto acquistato con successo!');

@@ -56,7 +56,7 @@ body { background-color: #1a1a1a; display: flex; justify-content: center; align-
 <button type="submit" class="btn-register">Registrati</button>
 </form>
 <div class="login-link">
-<a href="/login">Hai già un account? Log in</a>
+<a href="{{ url('/login') }}">Hai già un account? Login</a>
 </div>
 </div>
 </div>

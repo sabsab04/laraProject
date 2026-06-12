@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->integer('quantita')->default(1);
             $table->decimal('totale', 8, 2);
+            $table->string('payment_method')->default('paypal');
             $table->timestamps();
         });
     }

@@ -4,16 +4,30 @@
 
 @if(session('success'))
 <div id="success-msg" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: #d4edda; color: #155724; padding: 20px 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; font-weight: bold; font-size: 16px;">
-    ✅ {{ session('success') }}
+     {{ session('success') }}
 </div>
 <script>setTimeout(function() { document.getElementById('success-msg').style.display = 'none'; }, 3000);</script>
+@endif
+
+@if(session('success'))
+<div id="success-msg" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: #d4edda; color: #155724; padding: 20px 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; font-weight: bold; font-size: 16px;">
+     {{ session('success') }}
+</div>
+<script>setTimeout(function() { document.getElementById('success-msg').style.display = 'none'; }, 3000);</script>
+@endif
+
+@if(session('error'))
+<div id="error-msg" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: #f8d7da; color: #721c24; padding: 20px 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; font-weight: bold; font-size: 16px;">
+     {{ session('error') }}
+</div>
+<script>setTimeout(function() { document.getElementById('error-msg').style.display = 'none'; }, 3000);</script>
 @endif
 
 <div style="padding: 30px; max-width: 900px; margin: auto;">
     <h2 style="margin-bottom: 20px;">Acquista i tuoi biglietti!</h2>
 
     <div style="background: #f7f3f3; border-radius: 16px; padding: 20px; display: flex; gap: 20px; align-items: center; margin-bottom: 30px;">
-        <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="width: 200px; height: 130px; object-fit: cover; border-radius: 12px;">
+        <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('img/events/' . $evento->immagine) }}" alt="{{ $evento->titolo }}" style="width: 200px; height: 130px; object-fit: cover; border-radius: 12px;">
         <h2 style="font-size: 24px; font-weight: normal;">{{ $evento->titolo }}</h2>
     </div>
 
@@ -69,7 +83,7 @@
                     $partecipa = \App\Models\Attendance::where('user_id', Auth::id())->where('event_id', $evento->id)->exists();
                 @endphp
                 <button type="submit" style="width: 100%; background-color: white; color: #a24a5b; border: 2px solid #a24a5b; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer;">
-                    {{ $partecipa ? '✅ Parteciperò' : 'Parteciperò' }}
+                    {{ $partecipa ? 'Parteciperò' : 'Parteciperò' }}
                 </button>
             </form>
 
@@ -85,7 +99,7 @@
     <div style="background: white; border-radius: 16px; padding: 30px; max-width: 500px; width: 90%;">
         <h2 style="margin-bottom: 20px;">Riepilogo acquisto</h2>
         <div style="background: #f7f3f3; border-radius: 12px; padding: 15px; display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
-            <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('storage/' . $evento->immagine) }}" style="width: 120px; height: 80px; object-fit: cover; border-radius: 8px;">
+            <img src="{{ $evento->immagine === 'default.jpg' ? asset('img/events/default.jpg') : asset('mg/events/' . $evento->immagine) }}" style="width: 120px; height: 80px; object-fit: cover; border-radius: 8px;">
             <h3>{{ $evento->titolo }}</h3>
         </div>
         <p><i class="fa-regular fa-calendar"></i> <strong>Data:</strong> {{ \Carbon\Carbon::parse($evento->data)->format('d F Y') }}</p>
@@ -94,7 +108,7 @@
         <p style="margin-top: 10px;"><strong>Numero biglietti acquistati</strong><br><span id="riepilogo-quantita">1 biglietto</span></p>
         <p style="margin-top: 10px;"><strong>Modalità di pagamento scelta</strong><br><span id="riepilogo-pagamento">Paypal</span></p>
         <p style="margin-top: 10px;"><strong>Prezzo totale:</strong> <span id="riepilogo-prezzo" style="color: #a24a5b; font-weight: bold;"></span></p>
-        <p style="color: #7b2d3e; font-style: italic; margin-top: 10px;">Grazie per aver acquistato con noi! 🎉</p>
+        <p style="color: #7b2d3e; font-style: italic; margin-top: 10px;">Grazie per aver acquistato con noi!</p>
         <button onclick="confermaAcquisto()" style="width: 100%; background-color: #a24a5b; color: white; border: none; padding: 14px; border-radius: 25px; font-size: 16px; cursor: pointer; margin-top: 20px;">CHIUDI</button>
     </div>
 </div>

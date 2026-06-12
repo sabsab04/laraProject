@@ -14,12 +14,10 @@ class EventController extends Controller
         if ($request->filled('ricerca')) {
             $termine = $request->ricerca;
 
-            if (Auth::check() && str_contains($termine, '*')) {
-                // Utente loggato con asterisco: cerca nella descrizione
+            if (str_contains($termine, '*')) {
                 $wildcardTerm = str_replace('*', '%', $termine);
                 $query->where('descrizione', 'LIKE', $wildcardTerm);
             } else {
-                // Utente non loggato o senza asterisco: città esatta
                 $query->where('citta', $termine);
             }
         }

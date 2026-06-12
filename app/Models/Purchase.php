@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+    'user_id', 
+    'event_id', 
+    'quantita', 
+    'totale', 
+    'payment_method'
+    ];
 
     public function event()
     {
