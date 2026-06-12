@@ -42,8 +42,8 @@ body { background-color: #1a1a1a; display: flex; justify-content: center; align-
 <input type="text" name="surname" placeholder="Es. Bianchi" required>
 </div>
 <div class="form-group">
-<label>Email</label>
-<input type="email" name="email" placeholder="Es. giulio@email.com" required>
+<label>Username</label>
+<input type="text" name="username" placeholder="giuliobianchi" required>
 </div>
 <div class="form-group">
 <label>Data di nascita</label>
